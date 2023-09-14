@@ -8,11 +8,11 @@ import eu.happycoders.structuredconcurrency.service.CustomerService;
 import eu.happycoders.structuredconcurrency.service.InvoiceTemplateService;
 import eu.happycoders.structuredconcurrency.service.OrderService;
 
-public class InvoiceGeneratorSequential {
+public class InvoiceGenerator1_Sequential {
 
   public static void main(String[] args) throws InterruptedException {
-    InvoiceGeneratorSequential invoiceGenerator =
-        new InvoiceGeneratorSequential(
+    InvoiceGenerator1_Sequential invoiceGenerator =
+        new InvoiceGenerator1_Sequential(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());
     invoiceGenerator.createInvoice(10012, 61157, "en");
   }
@@ -21,7 +21,7 @@ public class InvoiceGeneratorSequential {
   private final CustomerService customerService;
   private final InvoiceTemplateService invoiceTemplateService;
 
-  public InvoiceGeneratorSequential(
+  public InvoiceGenerator1_Sequential(
       OrderService orderService,
       CustomerService customerService,
       InvoiceTemplateService invoiceTemplateService) {

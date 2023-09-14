@@ -16,7 +16,7 @@ public class InvoiceTemplateService {
       throw e;
     }
 
-    if (ThreadLocalRandom.current().nextDouble() > 0.8) {
+    if (ThreadLocalRandom.current().nextDouble() < 0.2) {
       log("Error loading template");
       throw new RuntimeException("Error loading template");
     }

@@ -16,7 +16,7 @@ public class OrderService {
       throw e;
     }
 
-    if (ThreadLocalRandom.current().nextDouble() > 0.8) {
+    if (ThreadLocalRandom.current().nextDouble() < 0.2) {
       log("Error loading order");
       throw new RuntimeException("Error loading order");
     }
