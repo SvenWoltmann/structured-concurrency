@@ -10,15 +10,19 @@ public class CustomerService {
   public Customer getCustomer(int customerId) throws InterruptedException {
     log("Loading customer");
     try {
-      Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+      long minSleepTime = Properties.PRESENTATION_MODE ? 300 : 500;
+      long maxSleepTime = Properties.PRESENTATION_MODE ? 400 : 1000;
+      Thread.sleep(ThreadLocalRandom.current().nextLong(minSleepTime, maxSleepTime));
     } catch (InterruptedException e) {
       log("Customer loading was interrupted");
       throw e;
     }
 
-    if (ThreadLocalRandom.current().nextDouble() < 0.2) {
-      log("Error loading customer");
-      throw new RuntimeException("Error loading customer");
+    if (!Properties.PRESENTATION_MODE) {
+      if (ThreadLocalRandom.current().nextDouble() < 0.2) {
+        log("Error loading customer");
+        throw new RuntimeException("Error loading customer");
+      }
     }
 
     log("Finished loading customer");

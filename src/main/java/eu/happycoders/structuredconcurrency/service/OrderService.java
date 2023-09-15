@@ -10,15 +10,19 @@ public class OrderService {
   public Order getOrder(int orderId) throws InterruptedException {
     log("Loading order");
     try {
-      Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+      long minSleepTime = Properties.PRESENTATION_MODE ? 900 : 500;
+      long maxSleepTime = 1000;
+      Thread.sleep(ThreadLocalRandom.current().nextLong(minSleepTime, maxSleepTime));
     } catch (InterruptedException e) {
       log("Order loading was interrupted");
       throw e;
     }
 
-    if (ThreadLocalRandom.current().nextDouble() < 0.2) {
-      log("Error loading order");
-      throw new RuntimeException("Error loading order");
+    if (!Properties.PRESENTATION_MODE) {
+      if (ThreadLocalRandom.current().nextDouble() < 0.2) {
+        log("Error loading order");
+        throw new RuntimeException("Error loading order");
+      }
     }
 
     log("Finished loading order");

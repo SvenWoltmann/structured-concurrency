@@ -10,13 +10,16 @@ public class InvoiceTemplateService {
   public InvoiceTemplate getTemplate(String language) throws InterruptedException {
     log("Loading template");
     try {
-      Thread.sleep(ThreadLocalRandom.current().nextLong(500, 1000));
+      long minSleepTime = Properties.PRESENTATION_MODE ? 600 : 500;
+      long maxSleepTime = Properties.PRESENTATION_MODE ? 700 : 1000;
+      Thread.sleep(ThreadLocalRandom.current().nextLong(minSleepTime, maxSleepTime));
     } catch (InterruptedException e) {
       log("Template loading was interrupted");
       throw e;
     }
 
-    if (ThreadLocalRandom.current().nextDouble() < 0.2) {
+    double errorProbability = Properties.PRESENTATION_MODE ? 0.5 : 0.2;
+    if (ThreadLocalRandom.current().nextDouble() < errorProbability) {
       log("Error loading template");
       throw new RuntimeException("Error loading template");
     }
