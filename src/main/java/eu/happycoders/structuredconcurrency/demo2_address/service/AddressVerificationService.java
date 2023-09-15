@@ -2,9 +2,9 @@ package eu.happycoders.structuredconcurrency.demo2_address.service;
 
 import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 
+import eu.happycoders.structuredconcurrency.demo1_invoice.service.Properties;
 import eu.happycoders.structuredconcurrency.demo2_address.model.Address;
 import eu.happycoders.structuredconcurrency.demo2_address.model.AddressVerificationResponse;
-import eu.happycoders.structuredconcurrency.service.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AddressVerificationService {

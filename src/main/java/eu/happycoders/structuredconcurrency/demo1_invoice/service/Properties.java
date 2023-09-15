@@ -1,4 +1,4 @@
-package eu.happycoders.structuredconcurrency.service;
+package eu.happycoders.structuredconcurrency.demo1_invoice.service;
 
 public class Properties {
 

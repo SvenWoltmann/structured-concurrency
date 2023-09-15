@@ -1,8 +1,8 @@
-package eu.happycoders.structuredconcurrency.service;
+package eu.happycoders.structuredconcurrency.demo1_invoice.service;
 
 import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 
-import eu.happycoders.structuredconcurrency.model.Order;
+import eu.happycoders.structuredconcurrency.demo1_invoice.model.Order;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderService {

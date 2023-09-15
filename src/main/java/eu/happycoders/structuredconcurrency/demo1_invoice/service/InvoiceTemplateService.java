@@ -1,8 +1,8 @@
-package eu.happycoders.structuredconcurrency.service;
+package eu.happycoders.structuredconcurrency.demo1_invoice.service;
 
 import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 
-import eu.happycoders.structuredconcurrency.model.InvoiceTemplate;
+import eu.happycoders.structuredconcurrency.demo1_invoice.model.InvoiceTemplate;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class InvoiceTemplateService {
