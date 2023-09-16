@@ -10,15 +10,14 @@ import eu.happycoders.structuredconcurrency.demo1_invoice.service.CustomerServic
 import eu.happycoders.structuredconcurrency.demo1_invoice.service.InvoiceTemplateService;
 import eu.happycoders.structuredconcurrency.demo1_invoice.service.OrderService;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Subtask;
 
-public class InvoiceGenerator2_ThreadPool {
+public class InvoiceGenerator6_ShutdownOnFailure {
 
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-    InvoiceGenerator2_ThreadPool invoiceGenerator =
-        new InvoiceGenerator2_ThreadPool(
+    InvoiceGenerator6_ShutdownOnFailure invoiceGenerator =
+        new InvoiceGenerator6_ShutdownOnFailure(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());
     invoiceGenerator.createInvoice(10012, 61157, "en");
   }
@@ -27,9 +26,7 @@ public class InvoiceGenerator2_ThreadPool {
   private final CustomerService customerService;
   private final InvoiceTemplateService invoiceTemplateService;
 
-  private final ExecutorService executor = Executors.newCachedThreadPool();
-
-  public InvoiceGenerator2_ThreadPool(
+  public InvoiceGenerator6_ShutdownOnFailure(
       OrderService orderService,
       CustomerService customerService,
       InvoiceTemplateService invoiceTemplateService) {
@@ -40,26 +37,26 @@ public class InvoiceGenerator2_ThreadPool {
 
   Invoice createInvoice(int orderId, int customerId, String language)
       throws InterruptedException, ExecutionException {
-    log("Submitting tasks");
+    try (StructuredTaskScope.ShutdownOnFailure scope =
+        new StructuredTaskScope.ShutdownOnFailure()) {
+      log("Forking tasks");
 
-    Future<Order> orderFuture = executor.submit(() -> orderService.getOrder(orderId));
+      Subtask<Order> orderSubtask = scope.fork(() -> orderService.getOrder(orderId));
+      Subtask<Customer> customerSubtask = scope.fork(() -> customerService.getCustomer(customerId));
+      Subtask<InvoiceTemplate> invoiceTemplateSubtask =
+          scope.fork(() -> invoiceTemplateService.getTemplate(language));
 
-    Future<Customer> customerFuture =
-        executor.submit(() -> customerService.getCustomer(customerId));
+      log("Waiting for all tasks to finish");
+      scope.join();
+      scope.throwIfFailed();
 
-    Future<InvoiceTemplate> invoiceTemplateFuture =
-        executor.submit(() -> invoiceTemplateService.getTemplate(language));
+      log("Retrieving results");
+      Order order = orderSubtask.get();
+      Customer customer = customerSubtask.get();
+      InvoiceTemplate template = invoiceTemplateSubtask.get();
 
-    log("Waiting for order");
-    Order order = orderFuture.get();
-
-    log("Waiting for customer");
-    Customer customer = customerFuture.get();
-
-    log("Waiting for template");
-    InvoiceTemplate invoiceTemplate = invoiceTemplateFuture.get();
-
-    log("Generating and returning invoice");
-    return Invoice.generate(order, customer, invoiceTemplate);
+      log("Generating and returning invoice");
+      return Invoice.generate(order, customer, template);
+    }
   }
 }

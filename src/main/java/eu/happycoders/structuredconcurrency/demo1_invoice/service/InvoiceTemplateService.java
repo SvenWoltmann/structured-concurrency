@@ -3,6 +3,7 @@ package eu.happycoders.structuredconcurrency.demo1_invoice.service;
 import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 
 import eu.happycoders.structuredconcurrency.demo1_invoice.model.InvoiceTemplate;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class InvoiceTemplateService {
@@ -26,5 +27,16 @@ public class InvoiceTemplateService {
 
     log("Finished loading template");
     return new InvoiceTemplate();
+  }
+
+  public CompletableFuture<InvoiceTemplate> getTemplateAsync(String language) {
+    return CompletableFuture.supplyAsync(
+        () -> {
+          try {
+            return getTemplate(language);
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+        });
   }
 }

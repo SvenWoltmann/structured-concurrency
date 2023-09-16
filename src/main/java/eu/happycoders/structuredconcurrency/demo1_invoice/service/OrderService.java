@@ -3,6 +3,7 @@ package eu.happycoders.structuredconcurrency.demo1_invoice.service;
 import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 
 import eu.happycoders.structuredconcurrency.demo1_invoice.model.Order;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class OrderService {
@@ -27,5 +28,16 @@ public class OrderService {
 
     log("Finished loading order");
     return new Order();
+  }
+
+  public CompletableFuture<Order> getOrderAsync(int orderId) {
+    return CompletableFuture.supplyAsync(
+        () -> {
+          try {
+            return getOrder(orderId);
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+        });
   }
 }

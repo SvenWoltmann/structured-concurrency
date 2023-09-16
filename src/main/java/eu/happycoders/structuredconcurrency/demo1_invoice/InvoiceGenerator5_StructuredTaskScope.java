@@ -12,11 +12,11 @@ import eu.happycoders.structuredconcurrency.demo1_invoice.service.OrderService;
 import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.StructuredTaskScope.Subtask;
 
-public class InvoiceGenerator4_StructuredTaskScope {
+public class InvoiceGenerator5_StructuredTaskScope {
 
   public static void main(String[] args) throws InterruptedException {
-    InvoiceGenerator4_StructuredTaskScope invoiceGenerator =
-        new InvoiceGenerator4_StructuredTaskScope(
+    InvoiceGenerator5_StructuredTaskScope invoiceGenerator =
+        new InvoiceGenerator5_StructuredTaskScope(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());
     invoiceGenerator.createInvoice(10012, 61157, "en");
   }
@@ -25,7 +25,7 @@ public class InvoiceGenerator4_StructuredTaskScope {
   private final CustomerService customerService;
   private final InvoiceTemplateService invoiceTemplateService;
 
-  public InvoiceGenerator4_StructuredTaskScope(
+  public InvoiceGenerator5_StructuredTaskScope(
       OrderService orderService,
       CustomerService customerService,
       InvoiceTemplateService invoiceTemplateService) {

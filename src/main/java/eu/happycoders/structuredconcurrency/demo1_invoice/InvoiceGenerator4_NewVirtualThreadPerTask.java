@@ -14,11 +14,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class InvoiceGenerator3_NewVirtualThreadPerTask {
+public class InvoiceGenerator4_NewVirtualThreadPerTask {
 
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-    InvoiceGenerator3_NewVirtualThreadPerTask invoiceGenerator =
-        new InvoiceGenerator3_NewVirtualThreadPerTask(
+    InvoiceGenerator4_NewVirtualThreadPerTask invoiceGenerator =
+        new InvoiceGenerator4_NewVirtualThreadPerTask(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());
     invoiceGenerator.createInvoice(10012, 61157, "en");
   }
@@ -27,7 +27,7 @@ public class InvoiceGenerator3_NewVirtualThreadPerTask {
   private final CustomerService customerService;
   private final InvoiceTemplateService invoiceTemplateService;
 
-  public InvoiceGenerator3_NewVirtualThreadPerTask(
+  public InvoiceGenerator4_NewVirtualThreadPerTask(
       OrderService orderService,
       CustomerService customerService,
       InvoiceTemplateService invoiceTemplateService) {
