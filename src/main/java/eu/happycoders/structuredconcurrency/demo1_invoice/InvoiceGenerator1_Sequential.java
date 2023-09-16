@@ -7,10 +7,11 @@ import eu.happycoders.structuredconcurrency.demo1_invoice.model.Order;
 import eu.happycoders.structuredconcurrency.demo1_invoice.service.CustomerService;
 import eu.happycoders.structuredconcurrency.demo1_invoice.service.InvoiceTemplateService;
 import eu.happycoders.structuredconcurrency.demo1_invoice.service.OrderService;
+import java.util.concurrent.ExecutionException;
 
 public class InvoiceGenerator1_Sequential {
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) throws InterruptedException, ExecutionException {
     InvoiceGenerator1_Sequential invoiceGenerator =
         new InvoiceGenerator1_Sequential(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());
@@ -30,7 +31,8 @@ public class InvoiceGenerator1_Sequential {
     this.invoiceTemplateService = invoiceTemplateService;
   }
 
-  Invoice createInvoice(int orderId, int customerId, String language) throws InterruptedException {
+  Invoice createInvoice(int orderId, int customerId, String language)
+      throws InterruptedException, ExecutionException {
     Order order = orderService.getOrder(orderId);
 
     Customer customer = customerService.getCustomer(customerId);

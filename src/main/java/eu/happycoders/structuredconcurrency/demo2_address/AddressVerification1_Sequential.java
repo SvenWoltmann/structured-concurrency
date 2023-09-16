@@ -5,10 +5,11 @@ import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 import eu.happycoders.structuredconcurrency.demo2_address.model.Address;
 import eu.happycoders.structuredconcurrency.demo2_address.model.AddressVerificationResponse;
 import eu.happycoders.structuredconcurrency.demo2_address.service.AddressVerificationService;
+import java.util.concurrent.ExecutionException;
 
 public class AddressVerification1_Sequential {
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) throws InterruptedException, ExecutionException {
     AddressVerification1_Sequential addressVerification =
         new AddressVerification1_Sequential(new AddressVerificationService());
     AddressVerificationResponse response =
@@ -23,7 +24,8 @@ public class AddressVerification1_Sequential {
     this.verificationService = verificationService;
   }
 
-  AddressVerificationResponse verifyAddress(Address address) throws InterruptedException {
+  AddressVerificationResponse verifyAddress(Address address)
+      throws InterruptedException, ExecutionException {
     try {
       return verificationService.verifyViaServiceA(address);
     } catch (Exception e) {
