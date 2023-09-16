@@ -38,30 +38,26 @@ public class InvoiceGenerator4_NewVirtualThreadPerTask {
 
   Invoice createInvoice(int orderId, int customerId, String language)
       throws InterruptedException, ExecutionException {
-    Future<Order> orderFuture;
-    Future<Customer> customerFuture;
-    Future<InvoiceTemplate> invoiceTemplateFuture;
-
     try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
       log("Submitting tasks");
 
-      orderFuture = executor.submit(() -> orderService.getOrder(orderId));
+      Future<Order> orderFuture = executor.submit(() -> orderService.getOrder(orderId));
+      Future<Customer> customerFuture =
+          executor.submit(() -> customerService.getCustomer(customerId));
+      Future<InvoiceTemplate> invoiceTemplateFuture =
+          executor.submit(() -> invoiceTemplateService.getTemplate(language));
 
-      customerFuture = executor.submit(() -> customerService.getCustomer(customerId));
+      log("Waiting for order");
+      Order order = orderFuture.get();
 
-      invoiceTemplateFuture = executor.submit(() -> invoiceTemplateService.getTemplate(language));
+      log("Waiting for customer");
+      Customer customer = customerFuture.get();
+
+      log("Waiting for template");
+      InvoiceTemplate invoiceTemplate = invoiceTemplateFuture.get();
+
+      log("Generating and returning invoice");
+      return Invoice.generate(order, customer, invoiceTemplate);
     }
-
-    log("Waiting for order");
-    Order order = orderFuture.get();
-
-    log("Waiting for customer");
-    Customer customer = customerFuture.get();
-
-    log("Waiting for template");
-    InvoiceTemplate invoiceTemplate = invoiceTemplateFuture.get();
-
-    log("Generating and returning invoice");
-    return Invoice.generate(order, customer, invoiceTemplate);
   }
 }
