@@ -17,7 +17,7 @@ public class SupplierDeliveryTimeCheck1_Sequential {
         new SupplierDeliveryTimeCheck1_Sequential(new SupplierDeliveryTimeService(FAIL_ALL));
     SupplierDeliveryTime response =
         supplierDeliveryTimeCheck.getSupplierDeliveryTime(
-            "B075PT2JH9", List.of("A", "B", "C", "D", "E"));
+            "B004V9OA84", List.of("A", "B", "C", "D", "E"));
     log("Response: " + response);
   }
 

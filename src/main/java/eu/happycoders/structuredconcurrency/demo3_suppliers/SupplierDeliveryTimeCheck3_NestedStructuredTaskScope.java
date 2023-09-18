@@ -5,22 +5,23 @@ import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 import eu.happycoders.structuredconcurrency.demo3_suppliers.model.SupplierDeliveryTime;
 import eu.happycoders.structuredconcurrency.demo3_suppliers.service.SupplierDeliveryTimeService;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.StructuredTaskScope.ShutdownOnSuccess;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Subtask;
+import java.util.concurrent.StructuredTaskScope.Subtask.State;
 
 public class SupplierDeliveryTimeCheck3_NestedStructuredTaskScope {
 
   private static final boolean FAIL_ALL = false;
 
   public static void main(String[] args)
-      throws SupplierDeliveryTimeCheckException, InterruptedException, ExecutionException {
+      throws SupplierDeliveryTimeCheckException, InterruptedException {
     SupplierDeliveryTimeCheck3_NestedStructuredTaskScope supplierDeliveryTimeCheck =
         new SupplierDeliveryTimeCheck3_NestedStructuredTaskScope(
             new SupplierDeliveryTimeService(FAIL_ALL));
-    SupplierDeliveryTime response =
-        supplierDeliveryTimeCheck.getSupplierDeliveryTime(
-            List.of("B075PT2JH9", "1243", "asdf"), List.of("A", "B", "C", "D", "E"));
-    log("Response: " + response);
+    List<SupplierDeliveryTime> responses =
+        supplierDeliveryTimeCheck.getSupplierDeliveryTimes(
+            List.of("B004V9OA84", "0201310090", "0134685997"), List.of("A", "B", "C", "D", "E"));
+    log("Responses: " + responses);
   }
 
   private final SupplierDeliveryTimeService service;
@@ -29,15 +30,20 @@ public class SupplierDeliveryTimeCheck3_NestedStructuredTaskScope {
     this.service = service;
   }
 
-  SupplierDeliveryTime getSupplierDeliveryTime(List<String> productIds, List<String> supplierIds)
-      throws InterruptedException, ExecutionException {
-    try (ShutdownOnSuccess<SupplierDeliveryTime> scope = new ShutdownOnSuccess<>()) {
-      for (String productId : productIds) {
-        scope.fork(() -> getSupplierDeliveryTime(productId, supplierIds));
-      }
+  List<SupplierDeliveryTime> getSupplierDeliveryTimes(
+      List<String> productIds, List<String> supplierIds) throws InterruptedException {
+    try (StructuredTaskScope<SupplierDeliveryTime> scope = new StructuredTaskScope<>()) {
+      List<Subtask<SupplierDeliveryTime>> subtasks =
+          productIds.stream()
+              .map(productId -> scope.fork(() -> getSupplierDeliveryTime(productId, supplierIds)))
+              .toList();
 
       scope.join();
-      return scope.result();
+
+      return subtasks.stream()
+          .filter(subtask -> subtask.state() == State.SUCCESS)
+          .map(Subtask::get)
+          .toList();
     }
   }
 
