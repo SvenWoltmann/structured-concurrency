@@ -37,8 +37,7 @@ public class InvoiceGenerator6_ShutdownOnFailure {
 
   Invoice createInvoice(int orderId, int customerId, String language)
       throws InterruptedException, ExecutionException {
-    try (StructuredTaskScope.ShutdownOnFailure scope =
-        new StructuredTaskScope.ShutdownOnFailure()) {
+    try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
       log("Forking tasks");
 
       Subtask<Order> orderSubtask = scope.fork(() -> orderService.getOrder(orderId));

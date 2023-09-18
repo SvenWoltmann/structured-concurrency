@@ -35,7 +35,7 @@ public class InvoiceGenerator5_StructuredTaskScope {
   }
 
   Invoice createInvoice(int orderId, int customerId, String language) throws InterruptedException {
-    try (StructuredTaskScope<Object> scope = new StructuredTaskScope<>()) {
+    try (var scope = new StructuredTaskScope<>()) {
       log("Forking tasks");
 
       Subtask<Order> orderSubtask = scope.fork(() -> orderService.getOrder(orderId));

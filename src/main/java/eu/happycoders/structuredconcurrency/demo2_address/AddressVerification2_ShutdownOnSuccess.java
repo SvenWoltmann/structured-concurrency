@@ -27,7 +27,7 @@ public class AddressVerification2_ShutdownOnSuccess {
 
   AddressVerificationResponse verifyAddress(Address address)
       throws InterruptedException, ExecutionException {
-    try (ShutdownOnSuccess<AddressVerificationResponse> scope = new ShutdownOnSuccess<>()) {
+    try (var scope = new ShutdownOnSuccess<AddressVerificationResponse>()) {
       log("Forking tasks");
 
       scope.fork(() -> verificationService.verifyViaServiceA(address));

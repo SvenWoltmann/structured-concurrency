@@ -42,7 +42,7 @@ public class SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValu
 
   List<SupplierDeliveryTime> getSupplierDeliveryTimes(
       List<String> productIds, List<String> supplierIds) throws InterruptedException {
-    try (StructuredTaskScope<SupplierDeliveryTime> scope = new StructuredTaskScope<>()) {
+    try (var scope = new StructuredTaskScope<SupplierDeliveryTime>()) {
       List<Subtask<SupplierDeliveryTime>> subtasks =
           productIds.stream()
               .map(productId -> scope.fork(() -> getSupplierDeliveryTime(productId, supplierIds)))
@@ -59,7 +59,7 @@ public class SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValu
 
   SupplierDeliveryTime getSupplierDeliveryTime(String productId, List<String> supplierIds)
       throws SupplierDeliveryTimeCheckException, InterruptedException {
-    try (GetFastestDeliveryTimeScope scope = new GetFastestDeliveryTimeScope()) {
+    try (var scope = new GetFastestDeliveryTimeScope()) {
       for (String supplierId : supplierIds) {
         scope.fork(() -> service.getDeliveryTime(productId, supplierId));
       }

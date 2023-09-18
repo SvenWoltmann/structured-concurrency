@@ -29,7 +29,7 @@ public class SupplierDeliveryTimeCheck2_StructuredTaskScope {
 
   SupplierDeliveryTime getSupplierDeliveryTime(String productId, List<String> supplierIds)
       throws SupplierDeliveryTimeCheckException, InterruptedException {
-    try (GetFastestDeliveryTimeScope scope = new GetFastestDeliveryTimeScope()) {
+    try (var scope = new GetFastestDeliveryTimeScope()) {
       for (String supplierId : supplierIds) {
         scope.fork(() -> service.getDeliveryTime(productId, supplierId));
       }
