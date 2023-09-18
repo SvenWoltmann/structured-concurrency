@@ -32,6 +32,7 @@ java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/de
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo2_address/AddressVerification2_ShutdownOnSuccess
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck2_StructuredTaskScope
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck3_NestedStructuredTaskScope
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue
 ```
 
 ## Java Downloads
