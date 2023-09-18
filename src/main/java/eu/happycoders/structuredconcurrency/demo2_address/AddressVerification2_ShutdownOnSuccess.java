@@ -28,11 +28,17 @@ public class AddressVerification2_ShutdownOnSuccess {
   AddressVerificationResponse verifyAddress(Address address)
       throws InterruptedException, ExecutionException {
     try (ShutdownOnSuccess<AddressVerificationResponse> scope = new ShutdownOnSuccess<>()) {
+      log("Forking tasks");
+
       scope.fork(() -> verificationService.verifyViaServiceA(address));
       scope.fork(() -> verificationService.verifyViaServiceB(address));
       scope.fork(() -> verificationService.verifyViaServiceC(address));
 
+      log("Waiting for one task to finish");
+
       scope.join();
+
+      log("Retrieving result");
 
       return scope.result();
     }

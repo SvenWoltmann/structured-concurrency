@@ -41,7 +41,7 @@ public class AddressVerificationService {
       long maxSleepTime = Properties.PRESENTATION_MODE ? minSleepTime + 100 : 1000;
       Thread.sleep(ThreadLocalRandom.current().nextLong(minSleepTime, maxSleepTime));
     } catch (InterruptedException e) {
-      log("Verifying address via service " + service + " interrupted");
+      log("Verifying address via service " + service + " was interrupted");
       throw e;
     }
 
