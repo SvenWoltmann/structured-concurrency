@@ -42,6 +42,8 @@ public class InvoiceGenerator2b_CompletableFutureCancelling {
     return CompletableFuture.allOf(
             orderFuture.exceptionally(
                 e -> {
+                  // Attention:
+                  // cancel(true) will only cancel the CompletableFuture, not the underlying task!
                   customerFuture.cancel(true);
                   templateFuture.cancel(true);
                   if (e instanceof CancellationException) {
@@ -52,6 +54,8 @@ public class InvoiceGenerator2b_CompletableFutureCancelling {
                 }),
             customerFuture.exceptionally(
                 e -> {
+                  // Attention:
+                  // cancel(true) will only cancel the CompletableFuture, not the underlying task!
                   orderFuture.cancel(true);
                   templateFuture.cancel(true);
                   if (e instanceof CancellationException) {
@@ -62,6 +66,8 @@ public class InvoiceGenerator2b_CompletableFutureCancelling {
                 }),
             templateFuture.exceptionally(
                 e -> {
+                  // Attention:
+                  // cancel(true) will only cancel the CompletableFuture, not the underlying task!
                   customerFuture.cancel(true);
                   orderFuture.cancel(true);
                   if (e instanceof CancellationException) {

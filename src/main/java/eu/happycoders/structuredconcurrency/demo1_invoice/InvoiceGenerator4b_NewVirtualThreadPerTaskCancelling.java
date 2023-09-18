@@ -55,6 +55,10 @@ public class InvoiceGenerator4b_NewVirtualThreadPerTaskCancelling {
                 }
               });
 
+      // Attention, possible race conditions here:
+      // If the thread above starts and fails and calls executor.shutdownNow() before the following
+      // submit() is called, then submit() will throw a RejectedExecutionException.
+
       customerFuture =
           executor.submit(
               () -> {
@@ -65,6 +69,10 @@ public class InvoiceGenerator4b_NewVirtualThreadPerTaskCancelling {
                   throw e;
                 }
               });
+
+      // Attention, possible race conditions here:
+      // If one of the threads above starts and fails and calls executor.shutdownNow() before the
+      // following submit() is called, then submit() will throw a RejectedExecutionException.
 
       invoiceTemplateFuture =
           executor.submit(
