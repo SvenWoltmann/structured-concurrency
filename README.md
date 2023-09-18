@@ -15,6 +15,25 @@ you can install the release candidate via the [JetBrains Toolbox App](https://ww
 by going into the IntelliJ IDEA settings and activating the "Early Access Program".
 
 
+## Compile and Run the Demos From the Command Line
+
+You can also compile the application manually like this:
+
+```
+javac --enable-preview --source 21 -d target/classes src/main/java/eu/happycoders/structuredconcurrency/util/*.java src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/model/*.java src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/service/*.java src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/*.java src/main/java/eu/happycoders/structuredconcurrency/demo2_address/model/*.java src/main/java/eu/happycoders/structuredconcurrency/demo2_address/service/*.java src/main/java/eu/happycoders/structuredconcurrency/demo2_address/*.java src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/model/*.java src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/service/*.java src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/*.java
+```
+
+And then run the three demos like this:
+
+```
+java -cp target/classes eu.happycoders.structuredconcurrency/demo1_invoice/InvoiceGenerator3_ThreadPool
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo1_invoice/InvoiceGenerator5_StructuredTaskScope
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo1_invoice/InvoiceGenerator6_ShutdownOnFailure
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo2_address/AddressVerification2_ShutdownOnSuccess
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck2_StructuredTaskScope
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck3_NestedStructuredTaskScope
+```
+
 ## Java Downloads
 
 You can download Java 21 from here: https://jdk.java.net/21/
