@@ -33,6 +33,8 @@ public class GetFastestDeliveryTimeScope extends StructuredTaskScope<SupplierDel
   }
 
   public SupplierDeliveryTime result() throws SupplierDeliveryTimeCheckException {
+    ensureOwnerAndJoined();
+
     log("--> fastestDeliveryTime = " + fastestDeliveryTime);
     log("--> exceptions          = " + exceptions);
 
