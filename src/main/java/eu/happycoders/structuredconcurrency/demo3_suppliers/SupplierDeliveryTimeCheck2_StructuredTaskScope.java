@@ -4,6 +4,7 @@ import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 
 import eu.happycoders.structuredconcurrency.demo3_suppliers.model.SupplierDeliveryTime;
 import eu.happycoders.structuredconcurrency.demo3_suppliers.service.SupplierDeliveryTimeService;
+import java.util.Comparator;
 import java.util.List;
 
 public class SupplierDeliveryTimeCheck2_StructuredTaskScope {
@@ -29,13 +30,15 @@ public class SupplierDeliveryTimeCheck2_StructuredTaskScope {
 
   SupplierDeliveryTime getSupplierDeliveryTime(String productId, List<String> supplierIds)
       throws SupplierDeliveryTimeCheckException, InterruptedException {
-    try (var scope = new GetFastestDeliveryTimeScope()) {
+    try (var scope =
+        new BestResultScope<>(
+            Comparator.comparing(SupplierDeliveryTime::deliveryTimeHours).reversed())) {
       for (String supplierId : supplierIds) {
         scope.fork(() -> service.getDeliveryTime(productId, supplierId));
       }
 
       scope.join();
-      return scope.result();
+      return scope.resultOrElseThrow(SupplierDeliveryTimeCheckException::new);
     }
   }
 }
