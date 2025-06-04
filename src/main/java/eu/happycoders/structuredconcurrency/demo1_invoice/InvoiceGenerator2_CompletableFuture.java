@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class InvoiceGenerator2_CompletableFuture {
 
-  public static void main(String[] args) throws InterruptedException {
+  static void main() {
     InvoiceGenerator2_CompletableFuture invoiceGenerator =
         new InvoiceGenerator2_CompletableFuture(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());

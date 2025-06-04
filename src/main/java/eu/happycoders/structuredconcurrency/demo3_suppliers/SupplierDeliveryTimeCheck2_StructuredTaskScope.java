@@ -6,13 +6,13 @@ import eu.happycoders.structuredconcurrency.demo3_suppliers.model.SupplierDelive
 import eu.happycoders.structuredconcurrency.demo3_suppliers.service.SupplierDeliveryTimeService;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.StructuredTaskScope;
 
 public class SupplierDeliveryTimeCheck2_StructuredTaskScope {
 
   private static final boolean FAIL_ALL = false;
 
-  public static void main(String[] args)
-      throws SupplierDeliveryTimeCheckException, InterruptedException {
+  static void main() throws InterruptedException {
     SupplierDeliveryTimeCheck2_StructuredTaskScope supplierDeliveryTimeCheck =
         new SupplierDeliveryTimeCheck2_StructuredTaskScope(
             new SupplierDeliveryTimeService(FAIL_ALL));
@@ -29,16 +29,16 @@ public class SupplierDeliveryTimeCheck2_StructuredTaskScope {
   }
 
   SupplierDeliveryTime getSupplierDeliveryTime(String productId, List<String> supplierIds)
-      throws SupplierDeliveryTimeCheckException, InterruptedException {
+      throws InterruptedException {
     try (var scope =
-        new BestResultScope<>(
-            Comparator.comparing(SupplierDeliveryTime::deliveryTimeHours).reversed())) {
+        StructuredTaskScope.open(
+            new BestResultJoiner<>(
+                Comparator.comparing(SupplierDeliveryTime::deliveryTimeHours).reversed()))) {
       for (String supplierId : supplierIds) {
         scope.fork(() -> service.getDeliveryTime(productId, supplierId));
       }
 
-      scope.join();
-      return scope.resultOrElseThrow(SupplierDeliveryTimeCheckException::new);
+      return scope.join();
     }
   }
 }

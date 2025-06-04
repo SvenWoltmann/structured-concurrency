@@ -7,14 +7,14 @@ import eu.happycoders.structuredconcurrency.demo3_suppliers.service.SupplierDeli
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Joiner;
 import java.util.concurrent.StructuredTaskScope.Subtask;
-import java.util.concurrent.StructuredTaskScope.Subtask.State;
 
 public class SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue {
 
   private static final boolean FAIL_ALL = false;
 
-  public static void main(String[] args) throws Exception {
+  static void main() throws Exception {
     SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue supplierDeliveryTimeCheck =
         new SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue(
             new SupplierDeliveryTimeServiceUsingScopedValue(FAIL_ALL));
@@ -43,32 +43,26 @@ public class SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValu
 
   List<SupplierDeliveryTime> getSupplierDeliveryTimes(
       List<String> productIds, List<String> supplierIds) throws InterruptedException {
-    try (var scope = new StructuredTaskScope<SupplierDeliveryTime>()) {
-      List<Subtask<SupplierDeliveryTime>> subtasks =
-          productIds.stream()
-              .map(productId -> scope.fork(() -> getSupplierDeliveryTime(productId, supplierIds)))
-              .toList();
+    try (var scope =
+        StructuredTaskScope.open(Joiner.<SupplierDeliveryTime>allSuccessfulOrThrow())) {
+      productIds.forEach(
+          productId -> scope.fork(() -> getSupplierDeliveryTime(productId, supplierIds)));
 
-      scope.join();
-
-      return subtasks.stream()
-          .filter(subtask -> subtask.state() == State.SUCCESS)
-          .map(Subtask::get)
-          .toList();
+      return scope.join().map(Subtask::get).toList();
     }
   }
 
   SupplierDeliveryTime getSupplierDeliveryTime(String productId, List<String> supplierIds)
-      throws SupplierDeliveryTimeCheckException, InterruptedException {
+      throws InterruptedException {
     try (var scope =
-        new BestResultScope<>(
-            Comparator.comparing(SupplierDeliveryTime::deliveryTimeHours).reversed())) {
+        StructuredTaskScope.open(
+            new BestResultJoiner<>(
+                Comparator.comparing(SupplierDeliveryTime::deliveryTimeHours).reversed()))) {
       for (String supplierId : supplierIds) {
         scope.fork(() -> service.getDeliveryTime(productId, supplierId));
       }
 
-      scope.join();
-      return scope.resultOrElseThrow(SupplierDeliveryTimeCheckException::new);
+      return scope.join();
     }
   }
 }

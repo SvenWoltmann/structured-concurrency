@@ -1,66 +1,105 @@
 # Structure Concurrency Examples
 
-This repository contains several examples for "Structured Concurrency",
-a feature described in [JEP 453](https://openjdk.org/jeps/453)
-and available in [Java 21](https://www.happycoders.eu/java/java-21-features/) 
-as a preview feature.
+This repository contains a collection of examples demonstrating _Structured Concurrency_, a feature introduced as a preview in [Java 21](https://www.happycoders.eu/java/java-21-features/), with major enhancements in Java 25.
 
-I use these examples in my presentations on structured concurrency.
+A comprehensive explanation of Structured Concurrency is available in this article:\
+👉 [Structured Concurrency in Java](https://www.happycoders.eu/java/structured-concurrency-structuredtaskscope/)
 
-## <br>Java 21 IDE Support
-
-[IntelliJ IDEA](https://www.jetbrains.com/idea/) supports Java 21 as of version 2023.2.2.
-As long as this version is not yet released,
-you can install the release candidate via the [JetBrains Toolbox App](https://www.jetbrains.com/toolbox-app/)
-by going into the IntelliJ IDEA settings and activating the "Early Access Program".
+These examples are also used in my presentations, which is why not all of the code is directly referenced in the article.
 
 
-## <br>Compile and Run the Demos From the Command Line
+## Java 21 vs. Java 25
 
-You can also compile the application manually like this:
+As mentioned above, *Structured Concurrency* underwent significant changes in Java 25.
 
-```
-javac --enable-preview --source 21 -d target/classes src/main/java/eu/happycoders/structuredconcurrency/util/*.java src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/model/*.java src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/service/*.java src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/*.java src/main/java/eu/happycoders/structuredconcurrency/demo2_address/model/*.java src/main/java/eu/happycoders/structuredconcurrency/demo2_address/service/*.java src/main/java/eu/happycoders/structuredconcurrency/demo2_address/*.java src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/model/*.java src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/service/*.java src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/*.java
+- The `main` branch contains the updated examples for Java 25.
+- The last commit compatible with Java 21–24 is available under the tag [`java-21`](https://github.com/SvenWoltmann/structured-concurrency/tree/java-21).
+
+To check out the Java 21 version after cloning the repository, run:
+
+```bash
+git checkout java-21
 ```
 
-And then run the three demos like this:
+## Compile and Run from the Command Line
 
+To compile the examples (replace `25` with your Java version):
+
+Linux/macOS (using '/' to break up lines):
+
+```bash
+javac --enable-preview --source 25 -d target/classes \
+  src/main/java/eu/happycoders/structuredconcurrency/util/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/model/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/service/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo2_address/model/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo2_address/service/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo2_address/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/model/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/service/*.java \
+  src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/*.java
 ```
+
+Windows (using '^' to break up lines):
+
+```bash
+javac --enable-preview --source 25 -d target/classes ^
+  src/main/java/eu/happycoders/structuredconcurrency/util/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/model/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/service/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo1_invoice/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo2_address/model/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo2_address/service/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo2_address/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/model/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/service/*.java ^
+  src/main/java/eu/happycoders/structuredconcurrency/demo3_suppliers/*.java
+```
+
+Run the demos as follows:
+
+```bash
 java -cp target/classes eu.happycoders.structuredconcurrency/demo1_invoice/InvoiceGenerator3_ThreadPool
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo1_invoice/InvoiceGenerator5_StructuredTaskScope
-java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo1_invoice/InvoiceGenerator6_ShutdownOnFailure
-java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo2_address/AddressVerification2_ShutdownOnSuccess
+java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo2_address/AddressVerification2_AnySuccessfulResult
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck2_StructuredTaskScope
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck3_NestedStructuredTaskScope
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue
 ```
 
-## <br>Java Downloads
+## Java Downloads
 
-You can download Java 21 from here: https://jdk.java.net/21/
+Java 25 Early Access: https://jdk.java.net/25/
 
-To install multiple Java versions on Linux or macOS, I recommend using [SDKMAN!](https://sdkman.io/)
+Java 24: https://jdk.java.net/24/
 
-To install multiple Java versions on Windows,
-have a look at this tutorial: [How to Change Java Versions in Windows](https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/)
+Archive of older versions: https://jdk.java.net/archive/
 
 
-## <br>Other Java 21 Examples
+### Java Version Management
 
-You might also find these GitHub repositories interesting:
+- **Linux/macOS:** Use [SDKMAN!](https://sdkman.io/) to manage multiple Java versions.
 
-Virtual Threads:
+- **Windows:** Follow [this guide](https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/) to switch between Java versions.
+
+
+## Related Repositories (Project Loom)
+
+Explore more Loom-related code:
+
+**Virtual Threads:**
+
 * https://github.com/SvenWoltmann/virtual-threads
 * https://github.com/SvenWoltmann/virtual-threads-quarkus
 * https://github.com/SvenWoltmann/virtual-threads-spring
 
-Scoped Values:
+**Scoped Values:**
+
 * https://github.com/SvenWoltmann/scoped-values
 
-Pattern Matching for Switch:
-* https://github.com/SvenWoltmann/pattern-matching-for-switch
 
-## <br>Other Resources
+## Other Resources
 
 ### Java Versions PDF Cheat Sheet
 

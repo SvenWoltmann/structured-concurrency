@@ -14,7 +14,7 @@ import java.util.concurrent.StructuredTaskScope.Subtask;
 
 public class InvoiceGenerator5_StructuredTaskScope {
 
-  public static void main(String[] args) throws InterruptedException {
+  static void main() throws InterruptedException {
     InvoiceGenerator5_StructuredTaskScope invoiceGenerator =
         new InvoiceGenerator5_StructuredTaskScope(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());
@@ -35,7 +35,7 @@ public class InvoiceGenerator5_StructuredTaskScope {
   }
 
   Invoice createInvoice(int orderId, int customerId, String language) throws InterruptedException {
-    try (var scope = new StructuredTaskScope<>()) {
+    try (var scope = StructuredTaskScope.open()) {
       log("Forking tasks");
 
       Subtask<Order> orderSubtask = scope.fork(() -> orderService.getOrder(orderId));

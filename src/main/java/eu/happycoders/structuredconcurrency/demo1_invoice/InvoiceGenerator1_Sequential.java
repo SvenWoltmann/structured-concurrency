@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 public class InvoiceGenerator1_Sequential {
 
-  public static void main(String[] args) throws InterruptedException, ExecutionException {
+  static void main() throws InterruptedException, ExecutionException {
     InvoiceGenerator1_Sequential invoiceGenerator =
         new InvoiceGenerator1_Sequential(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());

@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 
 public class InvoiceGenerator4_NewVirtualThreadPerTask {
 
-  public static void main(String[] args) throws InterruptedException, ExecutionException {
+  static void main() throws InterruptedException, ExecutionException {
     InvoiceGenerator4_NewVirtualThreadPerTask invoiceGenerator =
         new InvoiceGenerator4_NewVirtualThreadPerTask(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());

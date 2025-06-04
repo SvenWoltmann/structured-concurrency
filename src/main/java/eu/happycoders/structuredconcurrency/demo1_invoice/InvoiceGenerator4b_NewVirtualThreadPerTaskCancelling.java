@@ -16,7 +16,7 @@ import java.util.concurrent.Future.State;
 
 public class InvoiceGenerator4b_NewVirtualThreadPerTaskCancelling {
 
-  public static void main(String[] args) throws Throwable {
+  static void main() throws Throwable {
     InvoiceGenerator4b_NewVirtualThreadPerTaskCancelling invoiceGenerator =
         new InvoiceGenerator4b_NewVirtualThreadPerTaskCancelling(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());

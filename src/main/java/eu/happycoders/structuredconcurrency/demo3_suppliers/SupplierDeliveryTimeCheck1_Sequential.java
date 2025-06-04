@@ -11,8 +11,7 @@ public class SupplierDeliveryTimeCheck1_Sequential {
 
   private static final boolean FAIL_ALL = false;
 
-  public static void main(String[] args)
-      throws SupplierDeliveryTimeCheckException, InterruptedException {
+  static void main() throws SupplierDeliveryTimeCheckException {
     SupplierDeliveryTimeCheck1_Sequential supplierDeliveryTimeCheck =
         new SupplierDeliveryTimeCheck1_Sequential(new SupplierDeliveryTimeService(FAIL_ALL));
     SupplierDeliveryTime response =
@@ -28,7 +27,7 @@ public class SupplierDeliveryTimeCheck1_Sequential {
   }
 
   SupplierDeliveryTime getSupplierDeliveryTime(String productId, List<String> supplierIds)
-      throws SupplierDeliveryTimeCheckException, InterruptedException {
+      throws SupplierDeliveryTimeCheckException {
     List<Throwable> exceptions = new ArrayList<>();
     SupplierDeliveryTime fastestDeliveryTime = null;
 

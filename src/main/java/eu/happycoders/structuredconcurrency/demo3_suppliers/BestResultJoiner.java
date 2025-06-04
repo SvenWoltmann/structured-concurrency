@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.StructuredTaskScope;
-import java.util.function.Supplier;
+import java.util.concurrent.StructuredTaskScope.Joiner;
+import java.util.concurrent.StructuredTaskScope.Subtask;
 
-public class BestResultScope<T> extends StructuredTaskScope<T> {
+public class BestResultJoiner<T> implements Joiner<T, T> {
 
   private final Comparator<T> comparator;
 
   private T bestResult;
   private final List<Throwable> exceptions = Collections.synchronizedList(new ArrayList<>());
 
-  public BestResultScope(Comparator<T> comparator) {
+  public BestResultJoiner(Comparator<T> comparator) {
     this.comparator = comparator;
   }
 
   @Override
-  protected void handleComplete(Subtask<? extends T> subtask) {
+  public boolean onComplete(Subtask<? extends T> subtask) {
     switch (subtask.state()) {
       case UNAVAILABLE -> {
         // Ignore
@@ -34,15 +34,16 @@ public class BestResultScope<T> extends StructuredTaskScope<T> {
       }
       case FAILED -> exceptions.add(subtask.exception());
     }
+
+    return false; // Don't cancel the scope
   }
 
-  public <X extends Throwable> T resultOrElseThrow(Supplier<? extends X> exceptionSupplier)
-      throws X {
-    ensureOwnerAndJoined();
+  @Override
+  public T result() throws SupplierDeliveryTimeCheckException {
     if (bestResult != null) {
       return bestResult;
     } else {
-      X exception = exceptionSupplier.get();
+      SupplierDeliveryTimeCheckException exception = new SupplierDeliveryTimeCheckException();
       exceptions.forEach(exception::addSuppressed);
       throw exception;
     }

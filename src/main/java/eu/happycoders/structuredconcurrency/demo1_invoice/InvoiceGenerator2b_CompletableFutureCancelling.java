@@ -13,7 +13,7 @@ import java.util.concurrent.CompletionException;
 
 public class InvoiceGenerator2b_CompletableFutureCancelling {
 
-  public static void main(String[] args) throws InterruptedException {
+  static void main() {
     InvoiceGenerator2b_CompletableFutureCancelling invoiceGenerator =
         new InvoiceGenerator2b_CompletableFutureCancelling(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());

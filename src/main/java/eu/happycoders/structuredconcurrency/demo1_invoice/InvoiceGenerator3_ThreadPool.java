@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 
 public class InvoiceGenerator3_ThreadPool {
 
-  public static void main(String[] args) throws InterruptedException, ExecutionException {
+  static void main() throws InterruptedException, ExecutionException {
     InvoiceGenerator3_ThreadPool invoiceGenerator =
         new InvoiceGenerator3_ThreadPool(
             new OrderService(), new CustomerService(), new InvoiceTemplateService());

@@ -5,14 +5,14 @@ import static eu.happycoders.structuredconcurrency.util.SimpleLogger.log;
 import eu.happycoders.structuredconcurrency.demo2_address.model.Address;
 import eu.happycoders.structuredconcurrency.demo2_address.model.AddressVerificationResponse;
 import eu.happycoders.structuredconcurrency.demo2_address.service.AddressVerificationService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.StructuredTaskScope.ShutdownOnSuccess;
+import java.util.concurrent.StructuredTaskScope;
+import java.util.concurrent.StructuredTaskScope.Joiner;
 
-public class AddressVerification2_ShutdownOnSuccess {
+public class AddressVerification2_AnySuccessfulResult {
 
-  public static void main(String[] args) throws InterruptedException, ExecutionException {
-    AddressVerification2_ShutdownOnSuccess addressVerification =
-        new AddressVerification2_ShutdownOnSuccess(new AddressVerificationService());
+  static void main() throws InterruptedException {
+    AddressVerification2_AnySuccessfulResult addressVerification =
+        new AddressVerification2_AnySuccessfulResult(new AddressVerificationService());
     AddressVerificationResponse response =
         addressVerification.verifyAddress(
             new Address("1600 Pennsylvania Avenue, N.W.", null, "Washington", "DC", "20500", "US"));
@@ -21,13 +21,14 @@ public class AddressVerification2_ShutdownOnSuccess {
 
   private final AddressVerificationService verificationService;
 
-  public AddressVerification2_ShutdownOnSuccess(AddressVerificationService verificationService) {
+  public AddressVerification2_AnySuccessfulResult(AddressVerificationService verificationService) {
     this.verificationService = verificationService;
   }
 
-  AddressVerificationResponse verifyAddress(Address address)
-      throws InterruptedException, ExecutionException {
-    try (var scope = new ShutdownOnSuccess<AddressVerificationResponse>()) {
+  AddressVerificationResponse verifyAddress(Address address) throws InterruptedException {
+    try (var scope =
+        StructuredTaskScope.open(
+            Joiner.<AddressVerificationResponse>anySuccessfulResultOrThrow())) {
       log("Forking tasks");
 
       scope.fork(() -> verificationService.verifyViaServiceA(address));
@@ -36,11 +37,7 @@ public class AddressVerification2_ShutdownOnSuccess {
 
       log("Waiting for one task to finish");
 
-      scope.join();
-
-      log("Retrieving result");
-
-      return scope.result();
+      return scope.join();
     }
   }
 }
