@@ -1,6 +1,6 @@
 # Structure Concurrency Examples
 
-This repository contains a collection of examples demonstrating _Structured Concurrency_, a feature introduced as a preview in [Java 21](https://www.happycoders.eu/java/java-21-features/), with major enhancements in Java 25.
+This repository contains a collection of examples demonstrating _Structured Concurrency_, a feature introduced as a preview in [Java 21](https://www.happycoders.eu/java/java-21-features/), with major enhancements in [Java 25](https://www.happycoders.eu/java/java-25-features/).
 
 A comprehensive explanation of Structured Concurrency is available in this article:\
 👉 [Structured Concurrency in Java](https://www.happycoders.eu/java/structured-concurrency-structuredtaskscope/)
