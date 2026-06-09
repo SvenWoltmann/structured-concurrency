@@ -19,7 +19,7 @@ public class BestResultJoiner<T> implements Joiner<T, T> {
   }
 
   @Override
-  public boolean onComplete(Subtask<? extends T> subtask) {
+  public boolean onComplete(Subtask<T> subtask) {
     switch (subtask.state()) {
       case UNAVAILABLE -> {
         // Ignore

@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.StructuredTaskScope.Joiner;
-import java.util.concurrent.StructuredTaskScope.Subtask;
 
 public class SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue {
 
@@ -48,7 +47,7 @@ public class SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValu
       productIds.forEach(
           productId -> scope.fork(() -> getSupplierDeliveryTime(productId, supplierIds)));
 
-      return scope.join().map(Subtask::get).toList();
+      return scope.join();
     }
   }
 

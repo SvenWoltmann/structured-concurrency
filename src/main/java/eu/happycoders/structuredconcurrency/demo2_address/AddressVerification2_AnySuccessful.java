@@ -8,11 +8,11 @@ import eu.happycoders.structuredconcurrency.demo2_address.service.AddressVerific
 import java.util.concurrent.StructuredTaskScope;
 import java.util.concurrent.StructuredTaskScope.Joiner;
 
-public class AddressVerification2_AnySuccessfulResult {
+public class AddressVerification2_AnySuccessful {
 
   static void main() throws InterruptedException {
-    AddressVerification2_AnySuccessfulResult addressVerification =
-        new AddressVerification2_AnySuccessfulResult(new AddressVerificationService());
+    AddressVerification2_AnySuccessful addressVerification =
+        new AddressVerification2_AnySuccessful(new AddressVerificationService());
     AddressVerificationResponse response =
         addressVerification.verifyAddress(
             new Address("1600 Pennsylvania Avenue, N.W.", null, "Washington", "DC", "20500", "US"));
@@ -21,14 +21,14 @@ public class AddressVerification2_AnySuccessfulResult {
 
   private final AddressVerificationService verificationService;
 
-  public AddressVerification2_AnySuccessfulResult(AddressVerificationService verificationService) {
+  public AddressVerification2_AnySuccessful(AddressVerificationService verificationService) {
     this.verificationService = verificationService;
   }
 
   AddressVerificationResponse verifyAddress(Address address) throws InterruptedException {
     try (var scope =
         StructuredTaskScope.open(
-            Joiner.<AddressVerificationResponse>anySuccessfulResultOrThrow())) {
+            Joiner.<AddressVerificationResponse>anySuccessfulOrThrow())) {
       log("Forking tasks");
 
       scope.fork(() -> verificationService.verifyViaServiceA(address));

@@ -17,9 +17,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>3.15.0</version>
         <configuration>
-          <release>25</release>
+          <release>26</release>
           <!-- Preview features are required for structured concurrency -->
           <enablePreview>true</enablePreview>
         </configuration>
@@ -28,12 +28,12 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.44.5</version>
+        <version>3.6.0</version>
         <configuration>
           <java>
             <googleJavaFormat>
               <!-- Latest version can be found here: https://github.com/google/google-java-format/releases -->
-              <version>1.27.0</version>
+              <version>1.35.0</version>
               <style>GOOGLE</style>
             </googleJavaFormat>
             <lineEndings>UNIX</lineEndings>
