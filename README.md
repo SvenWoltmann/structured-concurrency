@@ -83,9 +83,6 @@ Explore more Loom-related code:
 * https://github.com/SvenWoltmann/scoped-values
 
 
-## Other Resources
-
-
 <!-- happycoders-resources:start -->
 <!-- Generated from happycoders-website-astro/data/github-readme by scripts/content/sync-github-readmes.mjs. Edit there, not here. -->
 
