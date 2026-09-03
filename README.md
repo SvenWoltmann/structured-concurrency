@@ -68,22 +68,6 @@ java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/de
 java -cp target/classes --enable-preview eu.happycoders.structuredconcurrency/demo3_suppliers/SupplierDeliveryTimeCheck4_NestedStructuredTaskScopeUsingScopedValue
 ```
 
-## Java Downloads
-
-Java 25 Early Access: https://jdk.java.net/25/
-
-Java 24: https://jdk.java.net/24/
-
-Archive of older versions: https://jdk.java.net/archive/
-
-
-### Java Version Management
-
-- **Linux/macOS:** Use [SDKMAN!](https://sdkman.io/) to manage multiple Java versions.
-
-- **Windows:** Follow [this guide](https://www.happycoders.eu/java/how-to-switch-multiple-java-versions-windows/) to switch between Java versions.
-
-
 ## Related Repositories (Project Loom)
 
 Explore more Loom-related code:
